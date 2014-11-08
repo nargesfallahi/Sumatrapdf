@@ -20,6 +20,7 @@
 #include "UITask.h"
 #include "WindowInfo.h"
 #include "WinUtil.h"
+#include <algorithm>
 
 static void SwapTabs(WindowInfo *win, int tab1, int tab2);
 
@@ -784,6 +785,8 @@ void TabsOnLoadedDoc(WindowInfo *win)
     TCITEM tcs;
     tcs.mask = TCIF_TEXT | TCIF_PARAM;
     tcs.pszText = (WCHAR *)path::GetBaseName(win->loadedFilePath);
+    tcs.pszText =std::reverse(tcs.pszText.begin(), tcs.pszText.end());
+    
     tcs.lParam = (LPARAM)td;
 
     int count = TabsGetCount(win);
@@ -810,6 +813,8 @@ void TabsOnChangedDoc(WindowInfo *win)
     TCITEM tcs;
     tcs.mask = TCIF_TEXT;
     tcs.pszText = (WCHAR *)path::GetBaseName(win->loadedFilePath);
+    tcs.pszText =std::reverse(tcs.pszText.begin(), tcs.pszText.end());
+    
     TabCtrl_SetItem(win->hwndTabBar, current, &tcs);
     UpdateCurrentTabBgColForWindow(win);
 }
